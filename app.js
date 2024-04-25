@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 
 // express app
 const app = express();
@@ -12,13 +13,16 @@ app.listen(3000);
 //midlewares
 // middlewares funzionano da sopra a sotto, e quando ricevono la risposta esconod quindi il resto del codice non viene applicato
 //per risolvere quello usiamo un terzo argomento, next, che ci permette di continuare con il codice anche dopo aver ricevuto la risposta
-app.use((req, res, next) => {
-  console.log("New Request was made:");
-  console.log("Host:", req.hostname);
-  console.log("Path:", req.path);
-  console.log("Method:", req.method);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("New Request was made:");
+//   console.log("Host:", req.hostname);
+//   console.log("Path:", req.path);
+//   console.log("Method:", req.method);
+//   next();
+// });
+//possiamo usare morgan library per controllare i middlwares
+
+app.use(morgan("combined"));
 
 // routing methods in express:
 app.get("/", (req, res) => {
