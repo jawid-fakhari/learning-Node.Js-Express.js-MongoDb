@@ -10,6 +10,9 @@ app.set("view engine", "ejs");
 //listen for requests
 app.listen(3000);
 
+//Middleware and Static File management
+app.use(express.static("public"));
+
 //midlewares
 // middlewares funzionano da sopra a sotto, e quando ricevono la risposta esconod quindi il resto del codice non viene applicato
 //per risolvere quello usiamo un terzo argomento, next, che ci permette di continuare con il codice anche dopo aver ricevuto la risposta
@@ -22,7 +25,7 @@ app.listen(3000);
 // });
 //possiamo usare morgan library per controllare i middlwares
 
-app.use(morgan("combined"));
+app.use(morgan("tiny"));
 
 // routing methods in express:
 app.get("/", (req, res) => {
