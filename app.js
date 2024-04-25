@@ -9,12 +9,15 @@ app.set("view engine", "ejs");
 //listen for requests
 app.listen(3000);
 
-//costum midleware
-app.use((req, res) => {
+//midlewares
+// middlewares funzionano da sopra a sotto, e quando ricevono la risposta esconod quindi il resto del codice non viene applicato
+//per risolvere quello usiamo un terzo argomento, next, che ci permette di continuare con il codice anche dopo aver ricevuto la risposta
+app.use((req, res, next) => {
   console.log("New Request was made:");
   console.log("Host:", req.hostname);
   console.log("Path:", req.path);
   console.log("Method:", req.method);
+  next();
 });
 
 // routing methods in express:
