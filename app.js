@@ -10,6 +10,10 @@ app.set("view engine", "ejs");
 //listen for requests
 app.listen(3000);
 
+//Connect to MongoDB
+const dbURI =
+  "mongodb+srv://<jawidTest>:<jawidTest123>@nodecourse.cfcb5sv.mongodb.net/?retryWrites=true&w=majority&appName=nodecourse";
+
 //Middleware and Static File management
 app.use(express.static("public"));
 
