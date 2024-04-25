@@ -9,6 +9,14 @@ app.set("view engine", "ejs");
 //listen for requests
 app.listen(3000);
 
+//costum midleware
+app.use((req, res) => {
+  console.log("New Request was made:");
+  console.log("Host:", req.hostname);
+  console.log("Path:", req.path);
+  console.log("Method:", req.method);
+});
+
 // routing methods in express:
 app.get("/", (req, res) => {
   //res.send("Hello Wrold, this an app with express.js");
