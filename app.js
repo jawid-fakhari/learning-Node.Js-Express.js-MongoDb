@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 
 // express app
 const app = express();
@@ -8,12 +9,16 @@ const app = express();
 app.set("view engine", "ejs");
 
 //listen for requests
-app.listen(3000);
+// con mongoDB + mongoose lo mettiamo nel mongoose.connect
 
 //Connect to MongoDB
 const dbURI =
-  "mongodb+srv://<jawidTest>:<jawidTest123>@nodecourse.cfcb5sv.mongodb.net/?retryWrites=true&w=majority&appName=nodecourse";
+  "mongodb+srv://jawidTest:jawidTest123@nodecourse.cfcb5sv.mongodb.net/node-course@?retryWrites=true&w=majority&appName=nodecourse";
 
+mongoose
+  .connect(dbURI)
+  .then((result) => app.listen(3000))
+  .catch((err) => console.log(err));
 //Middleware and Static File management
 app.use(express.static("public"));
 
