@@ -26,72 +26,32 @@ app.use(express.static("public"));
 
 app.use(morgan("tiny"));
 
-app.get("/add-blog", (req, res) => {
-  const blog = new Blog({
-    title: "New Blog 3",
-    snippet: "My new Blog 3",
-    body: "This is how making a Blog in expess, mongoDB",
-  });
-
-  blog
-    .save()
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
-app.get("/single-blog", (req, res) => {
-  Blog.findById("662ea8668af7d96cbbfd1d06")
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
-app.get("/all-blog", (req, res) => {
-  Blog.find()
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
-//*delete data methods
-app.get("/d-single-blog", (req, res) => {
-  Blog.findByIdAndDelete("662e9d52d5b1bc743a7279b9")
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
-app.get("/d-all-blog", (req, res) => {
-  Blog.deleteMany()
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
 // routing methods in express:
 app.get("/", (req, res) => {
-  //res.send("Hello Wrold, this an app with express.js");
-  //res.sendFile("./view/index.html", { root: __dirname }); // in express
-  const blogs = [
-    {
-      title: "Come creare dinamicamente in ejs: ",
-      snippet: "creando array dentro file app.js",
-    },
-    {
-      title: "Poi usando object: ",
-      snippet: "inseriamo i data",
-    },
-    {
-      title: "Poi chimare in render:  ",
-      snippet: "e passare i data dentro render mehotd col nome di array",
-    },
-  ];
-  res.render("index", {
-    title: "Home",
-    blogs,
-  }); //con ejs
+  // res.render("index", {
+  //   title: "Home",
+  //   blogs,
+  // }); //con ejs
+  res.redirect("/blogs");
 });
 
 app.get("/about", (req, res) => {
   res.render("about", {
     title: "About",
   }); // con ejs
+});
+
+//* How to render data come from server
+//blog routes
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .then((blogs) => {
+      res.render("index", {
+        title: "Blogs",
+        blogs,
+      });
+    })
+    .catch((err) => console.log(err));
 });
 
 app.get("/blogs/create", (req, res) => {
