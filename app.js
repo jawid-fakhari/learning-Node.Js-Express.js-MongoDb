@@ -1,9 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-//*Receiving and saving data*/
-const Blog = require("./model/blog");
-
+const blogRoutes = require("./routes/blogRoutes");
 // express app
 const app = express();
 
@@ -41,57 +39,8 @@ app.get("/about", (req, res) => {
   }); // con ejs
 });
 
-//* How to render data come from server
-//blog routes
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 }) // how to sort data come from server
-    .then((blogs) => {
-      res.render("index", {
-        title: "Blogs",
-        blogs,
-      });
-    })
-    .catch((err) => console.log(err));
-});
-
-//post method
-app.post("/blogs", (req, res) => {
-  const blog = new Blog(req.body);
-
-  blog
-    .save()
-    .then((result) => res.redirect("/blogs"))
-    .catch((err) => console.log(err));
-});
-
-app.get("/blogs/create", (req, res) => {
-  res.render("create", {
-    title: "Create",
-  }); // con ejs
-});
-
-//creating a new page for each blog by their id
-app.get("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-
-  Blog.findById(id)
-    .then((result) => {
-      res.render("details", { blog: result, title: "Blog details" });
-    })
-    .catch((err) => console.log(err));
-});
-
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-
-  Blog.findByIdAndDelete(id)
-    .then((result) => {
-      res.json({ redirect: "/blogs" });
-    })
-    .catch((err) => console.log(err));
-});
-
+//*blog routes management in express (espress router) => blogRoutes.ejs
+app.use("/blogs", blogRoutes); //è meglio usare radice qui
 //404 page
 app.use((req, res) => {
   res.status(404).render("404", {
