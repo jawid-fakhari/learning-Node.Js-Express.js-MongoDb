@@ -28,8 +28,8 @@ app.use(morgan("tiny"));
 
 app.get("/add-blog", (req, res) => {
   const blog = new Blog({
-    title: "New Blog",
-    snippet: "My new Blog 1",
+    title: "New Blog 3",
+    snippet: "My new Blog 3",
     body: "This is how making a Blog in expess, mongoDB",
   });
 
@@ -47,6 +47,19 @@ app.get("/single-blog", (req, res) => {
 
 app.get("/all-blog", (req, res) => {
   Blog.find()
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
+
+//*delete data methods
+app.get("/d-single-blog", (req, res) => {
+  Blog.findByIdAndDelete("662e9d52d5b1bc743a7279b9")
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
+
+app.get("/d-all-blog", (req, res) => {
+  Blog.deleteMany()
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });
