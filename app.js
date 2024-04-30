@@ -23,7 +23,7 @@ mongoose
   .catch((err) => console.log(err));
 //Middleware and Static File management
 app.use(express.static("public"));
-
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 
 // routing methods in express:
@@ -52,6 +52,16 @@ app.get("/blogs", (req, res) => {
         blogs,
       });
     })
+    .catch((err) => console.log(err));
+});
+
+//post method
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+
+  blog
+    .save()
+    .then((result) => res.redirect("/blogs"))
     .catch((err) => console.log(err));
 });
 
