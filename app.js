@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+//*Receiving and saving data*/
+const Blog = require("./model/blog");
 
 // express app
 const app = express();
@@ -22,19 +24,32 @@ mongoose
 //Middleware and Static File management
 app.use(express.static("public"));
 
-//midlewares
-// middlewares funzionano da sopra a sotto, e quando ricevono la risposta esconod quindi il resto del codice non viene applicato
-//per risolvere quello usiamo un terzo argomento, next, che ci permette di continuare con il codice anche dopo aver ricevuto la risposta
-// app.use((req, res, next) => {
-//   console.log("New Request was made:");
-//   console.log("Host:", req.hostname);
-//   console.log("Path:", req.path);
-//   console.log("Method:", req.method);
-//   next();
-// });
-//possiamo usare morgan library per controllare i middlwares
-
 app.use(morgan("tiny"));
+
+app.get("/add-blog", (req, res) => {
+  const blog = new Blog({
+    title: "New Blog",
+    snippet: "My new Blog 1",
+    body: "This is how making a Blog in expess, mongoDB",
+  });
+
+  blog
+    .save()
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
+
+app.get("/single-blog", (req, res) => {
+  Blog.findById("662ea8668af7d96cbbfd1d06")
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
+
+app.get("/all-blog", (req, res) => {
+  Blog.find()
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
 
 // routing methods in express:
 app.get("/", (req, res) => {
@@ -61,20 +76,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-  // res.send("This is About page with express.js");
-  // res.sendFile("./view/about.html", { root: __dirname }); // in express
   res.render("about", {
     title: "About",
   }); // con ejs
 });
 
-// app.get("/about-us", (req, res) => {
-//   res.redirect("/about");
-// });
-
 app.get("/blogs/create", (req, res) => {
-  // res.send("This is About page with express.js");
-  // res.sendFile("./view/about.html", { root: __dirname }); // in express
   res.render("create", {
     title: "Create",
   }); // con ejs
@@ -82,11 +89,7 @@ app.get("/blogs/create", (req, res) => {
 
 //404 page
 app.use((req, res) => {
-  //   res.sendFile("./view/404.html", { root: __dirname }); // in express
   res.status(404).render("404", {
     title: "404",
   }); //in ejs, possiamo acnhe concatenare status code
 });
-
-//uso di template enjine in express per creare dynamic codes
-// EJS è un View Engine, un npm lib che si installa poi va registrato(line 6)
