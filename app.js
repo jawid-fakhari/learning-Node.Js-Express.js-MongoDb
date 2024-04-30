@@ -45,6 +45,7 @@ app.get("/about", (req, res) => {
 //blog routes
 app.get("/blogs", (req, res) => {
   Blog.find()
+    .sort({ createdAt: -1 }) // how to sort data come from server
     .then((blogs) => {
       res.render("index", {
         title: "Blogs",
