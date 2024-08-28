@@ -13,11 +13,12 @@ app.set("view engine", "ejs");
 
 //Connect to MongoDB
 const dbURI =
-  "mongodb+srv://jawidTest:jawidTest123@nodecourse.cfcb5sv.mongodb.net/node-course@?retryWrites=true&w=majority&appName=nodecourse";
+  // "mongodb+srv://jawidTest:jawidTest123@nodecourse.cfcb5sv.mongodb.net/node-course@?retryWrites=true&w=majority&appName=nodecourse";
+  "mongodb+srv://netninja:test1234@nodetuts.hpih5.mongodb.net/note-tuts?retryWrites=true&w=majority&appName=nodetuts";
 
 mongoose
   .connect(dbURI)
-  .then((result) => app.listen(3000))
+  .then((result) => app.listen(8080))
   .catch((err) => console.log(err));
 //Middleware and Static File management
 app.use(express.static("public"));
